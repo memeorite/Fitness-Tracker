@@ -1,0 +1,102 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    background: lightslategrey;
+    background-repeat: no;
+    background-attachment: fixed;
+    background-position: center;
+    width: 1200px;
+    margin: 0 auto;
+    font-family: "Raleway", sans-serif;
+
+}
+
+header {
+    border: black solid;
+    padding-left: 1em;
+    width: 1200px;
+    height: 100px;
+
+}
+
+.headline {
+    font-size: 2em;
+    font-style: bold;
+    font-family: "Raleway", sans-serif;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+}
+.motto {
+    font-size: 0.75em;
+}
+
+
+.logo {
+    width: 200px;
+    height: 200px;
+    float: right;
+}
+
+.container {
+    display: flex;
+    gap: 2%;
+    font-size: 2rem;
+    padding-left: 1rem;
+
+}
+a {
+    flex: 1;
+    text-decoration: none;
+    outline: none;
+    text-align: center;
+    line-height: 3;
+    color: whitesmoke;
+    padding-left: 1em;
+    padding-right: 1em;
+
+}
+a:link, a:visited, a:focus {
+    background:darkblue;
+}
+a:hover {
+    background: orange;
+}
+a:active {
+    background: red;
+    color:white;
+}
+
+nav {
+    float: right;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-right: 1em;
+    margin-left: 1em;
+
+}
+
+main {
+    width: 1200px;
+    font-size: 2.5em;
+    height: 900px;
+    margin-top: 5em;
+
+}
+
+.background {
+    width: 1200px;
+    height: 650px;
+}
+
+footer {
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+}

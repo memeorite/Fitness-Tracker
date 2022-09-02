@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+.project1 {
+    border: black solid;
+    padding-left: 1em;
+    width: 1200px;
+    height: 600px;
+    margin-top:150px;
+}
+.project2 {
+    border: black solid;
+    padding-left: 1em;
+    width: 1200px;
+    height: 600px;
+    margin-top:150px;
+}

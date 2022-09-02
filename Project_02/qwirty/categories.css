@@ -1,0 +1,29 @@
+
+nav.categories {
+    flex: 0 0 256px;
+    display: flex;
+    flex-direction: column;
+    background-color: lightgrey;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-right:30px;
+    margin-left:30px;
+    
+}
+nav.categories a {
+    text-decoration: none;
+    font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #44b;
+    color: white;
+    margin-bottom:10px;
+    padding:20px;
+
+}
+nav.categories a:hover {
+    background-color: darkblue;
+    color:yellow;
+    box-shadow: 0 2px 5px -2px black;
+}

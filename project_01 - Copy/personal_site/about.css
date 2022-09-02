@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+.personal {
+    width: 1200;
+    min-height: 1000;
+
+}
+ul {
+    font-size: x-large;
+}
+
+.family {
+    width: 600px;
+    height: 325px;
+    float:right;
+}
+
+.hobbies {
+    width: 1200;
+    height: 1000;
+}
+
+.hiking {
+    width: 250px;
+    height: 250px;
+    padding-right: 20px;
+
+}
+
+.skiing {
+    width: 250px;
+    height: 250px;
+    
+}

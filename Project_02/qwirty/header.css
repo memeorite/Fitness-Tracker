@@ -1,0 +1,120 @@
+header nav.main-nav {
+    display: flex;
+    background-color: #44b;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+nav.main-nav li a {
+    display: flex;
+    color: white;
+    font-size: 20px;
+
+}
+nav ul.nav-list {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    
+}
+nav ul.nav-list a {
+    display: flex;
+    padding: 10px;
+    border-right: 2px solid white;
+    text-decoration: none;
+}
+.nav-list li:last-of-type a {
+    border-right: none;
+}
+nav ul.full-width {
+    display: none;
+    list-style: none;
+}
+nav ul.short-width {
+    display: flex;
+    list-style: none;
+}
+nav.sub-nav {
+    display: flex;
+    font-size: 20px;
+    padding:5px;
+    margin-top:10px;
+}
+nav form.search-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding:5px; 
+    flex-grow:1;  
+     
+    
+}
+nav form.search-form input {
+    display: flex;
+    align-self: center;
+    padding:10px;
+    font-size:20px;
+    flex: 1 1 700px;
+    border: none;
+    border-bottom: 2px #44b solid;
+   
+    
+}
+nav form.search-form button {
+    display: flex;
+    color: white;
+    background-color: #44b;
+    align-items: center;
+    padding:5px;
+    flex: 0 1 50px;
+    border: none;
+}
+form button i.material-icons {
+    display: flex;
+    flex: 0 1 40px;
+    
+}
+nav.sub-nav a {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    color: white;
+    background: red;
+    flex: 0 1 350px;
+    align-items: center;
+    justify-content: center;
+}
+nav.sub-nav a.credit-offer {
+    display: flex;
+    font-size:25px;
+    text-decoration: none;
+    align-self: center;
+    padding: 10px;
+     
+}
+nav.sub-nav span.company-name {
+    display: flex;
+    align-items: flex-start;
+    flex: 0 1 400px;
+    padding-left: 70px;
+    color:#44b;
+    margin-right: 100px;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+@media(min-width:768px) { 
+    .main-nav ul.full-width {
+        display: flex;
+    }
+    .main-nav ul.short-width {
+        display: none;
+    }
+}
+@media(max-width: 1030px){
+    nav.sub-nav {
+        display:inline-block;
+        justify-items: center;
+    }
+}

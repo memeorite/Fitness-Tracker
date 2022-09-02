@@ -1,0 +1,37 @@
+ * {
+    box-sizing: border-box;
+    font-size: 75px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+ }
+ body {
+   display: flex;
+   height:1200px;
+   align-items: center;
+   justify-content: center;
+}
+ .board {
+   display: flex;
+   flex: 0 0 360px;
+   flex-wrap: wrap;
+   
+ }
+ .cell {
+   display: flex;
+   flex: 0 0 120px;
+   border: 3px solid black;
+   align-items: center;
+   justify-content: center;
+ }
+div.cell:nth-child(-n+3){
+   border-top: hidden;
+}
+div.cell:nth-last-child(-n+3){
+   border-bottom: hidden;
+}
+div.cell:nth-child(3n+1){
+   border-left: hidden;
+}
+div.cell:nth-child(3n) {
+   border-right: hidden;
+}
