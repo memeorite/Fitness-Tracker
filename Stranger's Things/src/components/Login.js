@@ -6,33 +6,34 @@ const Login = ({ setToken, navigate }) => {
     const [password, setPassword] = useState('');
 
     const handleSubmit = async () => {
-        const results = await loginUser(username, password);
-        if (results.success) {
-            setToken(results.data.token);
-            window.localStorage.setItem('token', results.data.token);
+        const result = await loginUser(username, password);
+        if (result.success) {
+            setToken(result.data.token);
+            window.localStorage.setItem('token', result.data.token);
             navigate('/profile');
         } else {
-            console.log(results.error.message)
+            console.log(result.error.message)
         }
     }
-
     return (
-        <form onSubmit={(event) => {
-            event.preventDefault();
-            handleSubmit();
-        }}>
-             <input
-                type='text'
-                placeholder='Enter Username'
-                onChange={(event) => setUsername(event.target.value)}
-            />
-            <input
-                type='password'
-                placeholder='Enter Password'
-                onChange={(event) => setPassword(event.target.value)}
-            />
-            <button type='submit'>Submit</button>
-        </form>
+        <div>
+            <h2>Welcome Registered Stranger!</h2>
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+            }}>
+                <input
+                    type='text'
+                    placeholder='Enter Username'
+                    onChange={(event) => setUsername(event.target.value)} />
+                <input
+                    type='password'
+                    placeholder='Enter Password'
+                    onChange={(event) => setPassword(event.target.value)} />
+                <button type='submit'>Submit</button>
+            </form>
+        </div>
+
     )
 }
 

@@ -7,13 +7,14 @@ const Register = ({ setToken, navigate }) => {
 
 
     const handleSubmit = async () => {
-        const results = await registerUser(username, password);
-        if (results.success) {
-            setToken(results.data.token);
-            window.localStorage.setItem('token', results.data.token);
+        const result = await registerUser(username, password);
+        if (result.success) {
+            setToken(result.data.token);
+            window.localStorage.setItem('token', result.data.token);
             navigate('/profile');
         } else {
-            console.log(results.error.message)
+            window.alert('You are already registered.  Please login.')
+            navigate('/login');
         }
     }
 

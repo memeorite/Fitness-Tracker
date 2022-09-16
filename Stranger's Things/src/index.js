@@ -11,7 +11,9 @@ import {
     Login,
     CreatePost,
     SinglePostView,
-    EditPost
+    EditPost,
+    SearchBar,
+    SearchItems
 } from './components';
 
 import {
@@ -23,7 +25,7 @@ const App = () => {
     const [posts, setPosts] = useState([]);
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
-
+    
     const navigate = useNavigate();
 
     function logout() {
@@ -48,7 +50,8 @@ const App = () => {
         }
 
         const results = await getUserDetails(token)
-        if (results.succes) {
+        console.log(results)
+        if (results.success) {
             setUser(results.data);
         } else {
             console.log(results.error.message);
@@ -63,18 +66,22 @@ const App = () => {
         getMe();
     }, [token])
 
+ 
     return (
         <div>
             <Navbar logout={logout} token={token} />
             <Routes>
                 <Route
                     path='/'
-                    element={<Home />}
+                    element={<Home 
+                    />}
                 />
                 <Route
                     path='/posts'
                     element={<Posts
+                        token={token}
                         posts={posts}
+                        fetchPosts={fetchPosts}
                     />}
                 />
                 <Route
@@ -86,7 +93,7 @@ const App = () => {
                     />}
                 />
                 <Route
-                    exact path='posts/edit-post/:postID'
+                    exact path='/posts/edit-post/:postID'
                     element={<EditPost
                         posts={posts}
                         token={token}
@@ -96,12 +103,28 @@ const App = () => {
                     path='/posts/:postID'
                     element={<SinglePostView
                         posts={posts}
-                        token={token}
+                        token={token}   
                     />}
                 />
                 <Route
                     path='/profile'
-                    element={<Profile user={user}
+                    element={<Profile 
+                        user={user}
+                        token={token}
+                    />}
+                />
+                <Route
+                    path='/singlePostView'
+                    element={<SinglePostView
+                        user={user}
+                        token={token}
+                        posts={posts}
+                    />}
+                />
+                <Route
+                    path='/searchItems'
+                    element={<SearchItems
+                    posts={posts}
                     />}
                 />
                 <Route

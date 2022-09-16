@@ -31,7 +31,7 @@ const SinglePostView = ({ posts, token }) => {
 
     const [currentPost] = posts.filter(post => post._id === postID);
 
-    const { title, description, location, price, willDeliver } = currentPost;
+    const { title, description, location, price, willDeliver, _id } = currentPost;
 
     return (
         <div>
@@ -44,7 +44,7 @@ const SinglePostView = ({ posts, token }) => {
             </div>
             <button onClick={() => setActivateMessage(!activateMessage)}>Message this user</button>
             {
-                activateMessage && <sendMessage postID={postID} token={token} />
+                activateMessage && <SendMessage postID={postID} token={token} />
             }
         </div>
     )
