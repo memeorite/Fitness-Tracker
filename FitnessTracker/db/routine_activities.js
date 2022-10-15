@@ -103,7 +103,6 @@ async function canEditRoutineActivity(routineActivityId, userId) {
 module.exports = {
   getRoutineActivityById,
   addActivityToRoutine,
-  getRoutineActivitiesByRoutine,
   updateRoutineActivity,
   destroyRoutineActivity,
   canEditRoutineActivity,
