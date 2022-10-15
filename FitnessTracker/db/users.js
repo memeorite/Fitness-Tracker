@@ -1,22 +1,22 @@
 
 const client = require("./client");
+const bcrypt = require('bcrypt');
 
 
 // database functions
 
 // user functions
 async function createUser({ username, password }) {
-  // const SALT_COUNT = 10;
-  // const hashedPassword = await bcrypt.hash(password, SALT_COUNT)
-
+  const SALT_COUNT = 10;
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
 
   try {
     const { rows: [user] } = await client.query(`
     INSERT INTO users(username, password)
     VALUES ($1, $2)
     ON CONFLICT (username) DO NOTHING
-    RETURNING *;
-    `, [username, password]);
+    RETURNING id, username;
+    `, [username, hashedPassword]);
 
     return user;
   } catch (error) { 
@@ -26,23 +26,20 @@ async function createUser({ username, password }) {
 
 
 async function getUser(username, password) {
-  // const user = await getUserByUsername(username);
-  // const hashedPassword = user.password;
-  // const isValid = await bcrypt.compare(password, hashedPassword)
-  try {
-    const { rows: [user] } = await client.query(`
-      SELECT id, username, password
-      FROM users
-      WHERE username=${username} && password=${password};
-      `);
+  if(!username || !password) return
+  try{
+  const user = await getUserByUsername(username);
+  if(!user) return
+  const hashedPassword = user.password;
+    const passwordsMatch = await bcrypt.compare(password, hashedPassword);
+    if (!passwordsMatch) return 
+    delete user.password 
 
-      if (!user) {
-        return null
-      }
-    
-    return user;
-  } catch (error) {
-    console.log("Error getting user");
+      return user;
+  
+    } catch (error) {
+      console.log(error)
+      throw error;
   }
 }
 

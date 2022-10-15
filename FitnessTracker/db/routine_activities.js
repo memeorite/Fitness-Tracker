@@ -1,5 +1,7 @@
 // const activities = require('./activities');
 const client = require('./client');
+// const { attachActivitiesToRoutines} = require('./activities');
+
 // const routines = require('./routines');
 
 async function getRoutineActivityById(id) {
@@ -26,15 +28,29 @@ async function addActivityToRoutine({
   duration,
 }) {
   try {
-    const { rows: routine_activity } = await client.query(`
-    INSERT INTO routine_activities ("routineId", "activityId", count, duration)
+    const { rows:[routine_activity] } = await client.query(`
+    INSERT INTO routine_activity ("routineId", "activityId", count, duration)
     VALUES($1, $2, $3, $4)
+    ON CONFLICT ("routineId", "activityId") DO NOTHING
     RETURNING *; 
     `, [routineId, activityId, count, duration]);
-console.log("logging",routine_activity);
-    return routine_activity;
+return routine_activity;
+
   } catch (error) {
     console.log("Error adding activity to routine")
+  }
+}
+
+async function getRoutineActivitiesByRoutine({ id }) {
+  try {
+    const { rows: routine_activity } = await client.query(`
+      SELECT * FROM routine_activities
+      WHERE “routineId”=$1;
+    `, [id]);
+    return routine_activity;
+  } catch (error) {
+    console.log("Error getting routine activities by routine")
+    throw error;
   }
 }
 
@@ -103,6 +119,7 @@ async function canEditRoutineActivity(routineActivityId, userId) {
 module.exports = {
   getRoutineActivityById,
   addActivityToRoutine,
+  getRoutineActivitiesByRoutine,
   updateRoutineActivity,
   destroyRoutineActivity,
   canEditRoutineActivity,

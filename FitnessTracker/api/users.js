@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 // took from juicebox
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const usersRouter = require('../../Juicebox/api/users');
 
 //took from juicebox
 const { createUser, getUser, getUserById, getUserByUsername } = require('../db.users')
@@ -86,17 +87,24 @@ usersRouter.post('/register', async (req, res, next) => {
 // GET /api/users/me
 // from juicebox usersRouter.get to start. Created const userData... myself
 users.get('/', async (req, res, next) => {
-    const userData = await getAllUsers() ({
-        id:user.id,
-        username: username,
-        password: password
-    }, process.env.JWT_SECRET);    
-  
-    res.send({
-      userData
-    });
-  });
+  try{
+    const getCurrentUser = await getAllUsers() ({
+      id:user.id,
+      username: username,
+      password: password
+  }, process.env.JWT_SECRET); 
+} catch (error) {
+  console.log("not the current user")
+} 
+  res.send(getCurrentUser)
+});
+
+
+    
 
 // GET /api/users/:username/routines
-
+// used usersRouter.get from juicebox users.js as a start
+usersRouter.get('/', async (req, res) => {
+  const routinesByUser = await getPublicRoutinesByUser();
+}
 module.exports = router;

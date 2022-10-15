@@ -50,15 +50,15 @@ async function getAllRoutines() {
 //changed rows: [routines] to [allRoutines]; also changed in the return
 async function getAllRoutinesByUser({username}) {
   try {
-    const user=await getUserByUsername(username);
-    const { rows: [allRoutines] } = await client.query(`
+    const user = await getUserByUsername(username);
+    const { rows: routines } = await client.query(`
     SELECT routines.*,users.username AS "creatorName"
     FROM routines
     JOIN users ON routines."creatorId"=users.id
     WHERE "creatorId"=$1
     `,[user]);
 
-    return attachActivitiesToRoutines([allRoutines]);
+    return attachActivitiesToRoutines(routines);
   } catch (error) {
     console.log(error)
   } 
