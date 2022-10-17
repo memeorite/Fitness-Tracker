@@ -27,16 +27,20 @@ async function createUser({ username, password }) {
 
 
 async function getUser(username, password) {
-  if (!username || !password) return
+  // if (!username || !password) return
   try {
-    const user = await getUserByUsername(username);
-    if (!user) return
+    const { rows: [user] } = await client.query(`
+    SELECT username, password
+    FROM users
+    `);
+    // const user = await getUserByUsername(username);
+    // if (!user) return
     const hashedPassword = user.password;
     const passwordsMatch = await bcrypt.compare(password, hashedPassword);
     if (passwordsMatch) {
       delete user.password;
       return user;
-    } else {
+    }  else {
       return null;
     }
 
@@ -51,19 +55,44 @@ async function getUserById(userId) {
     const { rows: [user] } = await client.query(`
     SELECT id, username, password
     FROM users
-    WHERE id=${userId};
+    WHERE id = ${userId};
     `);
 
-    if (!user) {
+    if(!user) {
       return null
     }
-
+    // const user = await getUserById(userId);
+    // if (!user) return
+    // const hashedPassword = user.password;
+    // const passwordsMatch = await bcrypt.compare(password, hashedPassword);
+    // if (passwordsMatch) {
+    //   delete user.password;
+    //   return user;
+    // } else {
+    //   return;
+    // }
     return user;
   } catch (error) {
     console.log("Error getting user by id");
   }
-
 }
+  // try {
+  //   const { rows: [user] } = await client.query(`
+  //   SELECT id, username, password
+  //   FROM users
+  //   WHERE id=${userId};
+  //   `);
+
+  //   if (!user) {
+  //     return null
+  //   }
+
+  //   return (user, password);
+  // } catch (error) {
+  //   console.log("Error getting user by id");
+  // }
+
+// }
 
 async function getUserByUsername(username) {
   try {

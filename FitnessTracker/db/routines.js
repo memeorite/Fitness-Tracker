@@ -4,7 +4,7 @@ const { getUserByUsername } = require('./users');
 
 async function getRoutineById(id) {
   try {
-    const { rows: [routine] } = await client.query(`
+    const { rows: routine } = await client.query(`
     SELECT *
     FROM routines
     WHERE routines.id=$1;
@@ -21,12 +21,12 @@ async function getRoutineById(id) {
 async function getRoutinesWithoutActivities() {
   // const routinesArray = [...getRoutinesWithoutActivities];
   try { 
-    const {rows: routinesArray} = await client.query(`
+    const {rows: routines} = await client.query(`
     SELECT *
     FROM routines;
     `,);
 
-    return routinesArray;
+    return routines;
   } catch(error) {
     console.log(error);
   }
@@ -35,12 +35,12 @@ async function getRoutinesWithoutActivities() {
 //changed rows: routines to [allRoutines]; also put the array in the return
 async function getAllRoutines() {
   try {
-    const { rows: [allRoutines] } = await client.query(`
+    const { rows: routines } = await client.query(`
     SELECT routines.*, users.username AS "creatorName"
     FROM routines
     JOIN users ON routines."creatorId"=users.id
     `);
-    return attachActivitiesToRoutines([allRoutines]);
+    return attachActivitiesToRoutines(routines);
   
   } catch (error) {
     console.log(error);
@@ -67,7 +67,7 @@ async function getAllRoutinesByUser({username}) {
 //changed rows: [routines] to [publicRoutines]; also in the return
 async function getPublicRoutinesByUser({username}) {
   try {
-    const { rows:[publicRoutines] } = await client.query(`
+    const { rows:routines } = await client.query(`
     SELECT routines.*, users.username AS "creatorName"
     FROM routines
     JOIN users ON routines."creatorId"=users.id
@@ -75,7 +75,7 @@ async function getPublicRoutinesByUser({username}) {
     AND "isPublic"=true
     `, [username]);  
 
-  return attachActivitiesToRoutines([publicRoutines]);
+  return attachActivitiesToRoutines(routines);
   } catch(error){
     console.log(error)
   }
@@ -84,14 +84,14 @@ async function getPublicRoutinesByUser({username}) {
 // changed rows: routines to [publicRoutines]; also changed it in the return
 async function getAllPublicRoutines() {
   try {
-    const { rows:[publicRoutines]} = await client.query(`
+    const { rows:routines} = await client.query(`
     SELECT routines.*, users.username AS "creatorName"
     FROM routines
     JOIN users ON routines."creatorId"=users.id
     WHERE "isPublic" = true
     `);
     
-    return attachActivitiesToRoutines([publicRoutines]);
+    return attachActivitiesToRoutines(routines);
     } catch (error) {
       console.log(error)
   }
@@ -101,7 +101,7 @@ async function getAllPublicRoutines() {
 async function getPublicRoutinesByActivity({id}) {
   try{
     const {
-      rows:[publicRoutines]} = await client.query(`
+      rows:routines} = await client.query(`
       SELECT routines.*, users.username AS "creatorName"
       FROM routines
       JOIN users ON routines.creatorId = users.id
@@ -110,7 +110,7 @@ async function getPublicRoutinesByActivity({id}) {
       AND routine_activities.activityId=$1;
       `,[id]);
 
-      return attachActivitiesToRoutines([publicRoutines]);
+      return attachActivitiesToRoutines(routines);
     } catch(error) {
       console.log(error);
     }

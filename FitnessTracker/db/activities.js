@@ -6,11 +6,11 @@ const client = require("./client")
 async function getAllActivities() {
   // const allActivitiesArray = [...activities];
   try {
-    const { rows:allActivitiesArray } = await client.query(`
+    const { rows:activities } = await client.query(`
     SELECT *
     FROM activities
 `);
-    return allActivitiesArray;
+    return activities;
   } catch (error) {
     console.log("Error getting activities")
     throw error;
@@ -78,14 +78,14 @@ async function attachActivitiesToRoutines(routines) {
 async function createActivity({ name, description }) {
   // const newActivity = [...createActivity];
   try {
-    const { rows: [newActivity] } = await client.query(`
+    const { rows: activity } = await client.query(`
     INSERT INTO activities(name, description)
     VALUES($1, $2)
     ON CONFLICT(name) DO NOTHING
     RETURNING *
     `, [name, description]);
 
-    return newActivity;
+    return activity;
   } catch (error) {
     console.log("Error creating activity")
     throw error;
@@ -100,13 +100,13 @@ async function createActivity({ name, description }) {
 async function updateActivity({ id, name, description }) {
   // const updatedActivity = [...updateActivity];
   try {
-    const { rows: [updatedActivity] } = await client.query(`
+    const { rows: [activity] } = await client.query(`
     UPDATE activities
     SET name = $2, description = $3
     WHERE id = $1
     RETURNING *
       `, [id, name, description]);
-    return updatedActivity;
+    return activity;
   } catch (error) {
     console.log("Error updating activity");
     throw error;
