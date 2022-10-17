@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 // database functions
 
 // user functions
+
 async function createUser({ username, password }) {
   const SALT_COUNT = 10;
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
@@ -19,27 +20,29 @@ async function createUser({ username, password }) {
     `, [username, hashedPassword]);
 
     return user;
-  } catch (error) { 
+  } catch (error) {
     console.log("Error creating user");
-    }
   }
+}
 
 
 async function getUser(username, password) {
-  if(!username || !password) return
-  try{
-  const user = await getUserByUsername(username);
-  if(!user) return
-  const hashedPassword = user.password;
+  if (!username || !password) return
+  try {
+    const user = await getUserByUsername(username);
+    if (!user) return
+    const hashedPassword = user.password;
     const passwordsMatch = await bcrypt.compare(password, hashedPassword);
-    if (!passwordsMatch) return 
-    delete user.password 
-
+    if (passwordsMatch) {
+      delete user.password;
       return user;
-  
-    } catch (error) {
-      console.log(error)
-      throw error;
+    } else {
+      return null;
+    }
+
+  } catch (error) {
+    console.log(error)
+    throw error;
   }
 }
 
@@ -55,7 +58,7 @@ async function getUserById(userId) {
       return null
     }
 
-    return {user};
+    return user;
   } catch (error) {
     console.log("Error getting user by id");
   }
@@ -70,9 +73,9 @@ async function getUserByUsername(username) {
     WHERE username=$1;
     `, [username]);
 
-    return {user};
+    return user;
   } catch (error) {
-  console.log("Error getting user by username");
+    console.log("Error getting user by username");
   }
 }
 

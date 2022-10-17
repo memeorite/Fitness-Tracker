@@ -63,7 +63,7 @@ usersRouter.post('/register', async (req, res, next) => {
       });
     }
 
-    const user = await createUser({username,hashedPassword});
+    const user = await createUser({username, hashedPassword});
 
     if (password.length < 8) {
       next({
