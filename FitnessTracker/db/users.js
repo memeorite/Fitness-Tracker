@@ -17,7 +17,6 @@ async function createUser({ username, password }) {
     ON CONFLICT (username) DO NOTHING
     RETURNING id, username;
     `, [username, hashedPassword]);
-
     return user;
   } catch (error) {
     console.log("Error creating user");
@@ -25,17 +24,17 @@ async function createUser({ username, password }) {
 }
 
 
-async function getUser( username, password ) {
+async function getUser( {username, password} ) {
   // const SALT_COUNT = 10;
   
   if (!username || !password) return
   try {
-    const user = await getUserByUsername(username, password);
+    const user = await getUserByUsername(username);
     // if (!user) return
     // const user = await createUser(password, username);
     // if (!password) return
     // if (!username || !password) return
-    
+  console.log("get user log", user)
     const hashedPassword = user.password
     const passwordsMatch = await bcrypt.compare(password, hashedPassword);
     if (passwordsMatch) {
@@ -77,10 +76,10 @@ async function getUserById(id) {
 async function getUserByUsername(username) {
   try {
     const { rows: [user] } = await client.query(`
-    SELECT username
+    SELECT *
     FROM users
     WHERE username=$1;
-    `[username]);
+    `, [username]);
 
     return user;
   } catch (error) {
