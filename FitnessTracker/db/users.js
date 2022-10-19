@@ -1,4 +1,3 @@
-
 const client = require("./client");
 const bcrypt = require('bcrypt');
 
@@ -26,16 +25,18 @@ async function createUser({ username, password }) {
 }
 
 
-async function getUser(username, password) {
-  // if (!username || !password) return
+async function getUser( username, password ) {
+  // const SALT_COUNT = 10;
+  
+  if (!username || !password) return
   try {
-    const { rows: [user] } = await client.query(`
-    SELECT username, password
-    FROM users
-    `);
-    // const user = await getUserByUsername(username);
+    const user = await getUserByUsername(username, password);
     // if (!user) return
-    const hashedPassword = user.password;
+    // const user = await createUser(password, username);
+    // if (!password) return
+    // if (!username || !password) return
+    
+    const hashedPassword = user.password
     const passwordsMatch = await bcrypt.compare(password, hashedPassword);
     if (passwordsMatch) {
       delete user.password;
@@ -50,57 +51,36 @@ async function getUser(username, password) {
   }
 }
 
-async function getUserById(userId) {
+async function getUserById(id) {
+  // const user = await getUserById(id);
+
   try {
-    const { rows: [user] } = await client.query(`
-    SELECT id, username, password
+    const { rows:user } = await client.query(`
+    SELECT id, password
     FROM users
-    WHERE id = ${userId};
+    WHERE id = ${id}
     `);
 
     if(!user) {
       return null
+    } else {
+      delete user.password;
+      return user;
     }
-    // const user = await getUserById(userId);
-    // if (!user) return
-    // const hashedPassword = user.password;
-    // const passwordsMatch = await bcrypt.compare(password, hashedPassword);
-    // if (passwordsMatch) {
-    //   delete user.password;
-    //   return user;
-    // } else {
-    //   return;
-    // }
-    return user;
+
   } catch (error) {
     console.log("Error getting user by id");
   }
 }
-  // try {
-  //   const { rows: [user] } = await client.query(`
-  //   SELECT id, username, password
-  //   FROM users
-  //   WHERE id=${userId};
-  //   `);
-
-  //   if (!user) {
-  //     return null
-  //   }
-
-  //   return (user, password);
-  // } catch (error) {
-  //   console.log("Error getting user by id");
-  // }
-
-// }
+  
 
 async function getUserByUsername(username) {
   try {
     const { rows: [user] } = await client.query(`
-    SELECT *
+    SELECT username
     FROM users
     WHERE username=$1;
-    `, [username]);
+    `[username]);
 
     return user;
   } catch (error) {
