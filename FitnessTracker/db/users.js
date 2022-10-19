@@ -25,16 +25,10 @@ async function createUser({ username, password }) {
 
 
 async function getUser( {username, password} ) {
-  // const SALT_COUNT = 10;
-  
   if (!username || !password) return
   try {
     const user = await getUserByUsername(username);
-    // if (!user) return
-    // const user = await createUser(password, username);
-    // if (!password) return
-    // if (!username || !password) return
-  console.log("get user log", user)
+
     const hashedPassword = user.password
     const passwordsMatch = await bcrypt.compare(password, hashedPassword);
     if (passwordsMatch) {
@@ -51,11 +45,9 @@ async function getUser( {username, password} ) {
 }
 
 async function getUserById(id) {
-  // const user = await getUserById(id);
-
   try {
-    const { rows:user } = await client.query(`
-    SELECT id, password
+    const { rows: [user] } = await client.query(`
+    SELECT *
     FROM users
     WHERE id = ${id}
     `);
