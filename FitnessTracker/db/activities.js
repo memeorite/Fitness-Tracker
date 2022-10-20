@@ -2,9 +2,8 @@ const client = require("./client")
 
 // database functions
 
-//added  const allActivitiesArray because it is supposed to reutn an array of all activities
+
 async function getAllActivities() {
-  // const allActivitiesArray = [...activities];
   try {
     const { rows:activities } = await client.query(`
     SELECT *
@@ -74,11 +73,9 @@ async function attachActivitiesToRoutines(routines) {
 }
 
 // return the new activity
-// added const newActivity so I could return newActivity
 async function createActivity({ name, description }) {
-  // const newActivity = [...createActivity];
   try {
-    const { rows: activity } = await client.query(`
+    const { rows: [activity] } = await client.query(`
     INSERT INTO activities(name, description)
     VALUES($1, $2)
     ON CONFLICT(name) DO NOTHING
@@ -95,20 +92,21 @@ async function createActivity({ name, description }) {
 // don’t try to update the id
 // do update the name and description
 // return the updated activity
-//The instructions had id listed, just not updated, so I put it in
-// I also added the const updatedActivity so I could return it
-async function updateActivity({ id, name, description }) {
-  // const updatedActivity = [...updateActivity];
+async function updateActivity({ id, ...fields }) {
+  const setString = Object.keys(fields).map((key,index)=> `"${key}"=$${index + 1}`).join(",");
   try {
-    const { rows: [activity] } = await client.query(`
-    UPDATE activities
-    SET name = $2, description = $3
-    WHERE id = $1
-    RETURNING *
-      `, [id, name, description]);
-    return activity;
+    if(setString.length > 0) {
+      const { rows } = await client.query(
+        `UPDATE activities
+        SET ${setString}
+        WHERE id = ${id}
+        RETURNING *;
+      `, Object.values(fields));
+    return rows[0];
+    }
+    
   } catch (error) {
-    console.log("Error updating activity");
+    console.log(error);
     throw error;
   }
 }
